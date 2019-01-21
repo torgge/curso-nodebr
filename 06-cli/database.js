@@ -19,7 +19,7 @@ class Database {
     }
 
     async escreverArquivo(dados) {
-        await writeFileAsync(this.NOME_ARQUIVO, dados)
+        await writeFileAsync(this.NOME_ARQUIVO, JSON.stringify(dados))
         return true
     }
 
@@ -35,7 +35,7 @@ class Database {
             ...dados, heroiComId
         ]
 
-        await this.escreverArquivo(JSON.stringify(dadosFinal))
+        await this.escreverArquivo(dados)
         return dadosFinal
     }
 
@@ -43,6 +43,22 @@ class Database {
         const dados = await this.obterDadosArquivo()
         const dadosFiltrados = dados.filter(item => (id ? (item.id === id) : true))
         return dadosFiltrados
+    }
+
+    async remover(id) {
+        if (!id) {
+            return await this.escreverArquivo([])
+        }
+
+        const dados = await this.obterDadosArquivo(id)
+        const indice = dados.findIndex(item => item.id === parseInt(id))
+
+        if (indice === -1) {
+            throw Error(`Usuário com id ${id} não existe.`)
+        }
+
+        dados.splice(indice, 1)
+        return await this.escreverArquivo(dados)
     }
 }
 
