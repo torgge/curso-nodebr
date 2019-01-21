@@ -35,7 +35,7 @@ class Database {
             ...dados, heroiComId
         ]
 
-        await this.escreverArquivo(dadosFinal)
+        await this.escreverArquivo(JSON.stringify(dadosFinal))
         return dadosFinal
     }
 
