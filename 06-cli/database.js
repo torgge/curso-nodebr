@@ -35,7 +35,7 @@ class Database {
             ...dados, heroiComId
         ]
 
-        await this.escreverArquivo(dados)
+        await this.escreverArquivo(dadosFinal)
         return dadosFinal
     }
 
