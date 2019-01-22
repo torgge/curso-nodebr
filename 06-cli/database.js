@@ -60,6 +60,29 @@ class Database {
         dados.splice(indice, 1)
         return await this.escreverArquivo(dados)
     }
+
+    async atualizar(id, modificacoes) {
+        if (!id) {
+            throw Error(`Id inválido`)
+        }
+
+        const dados = await this.obterDadosArquivo()
+        const indice = dados.findIndex(item => parseInt(item.id) === parseInt(id))
+
+        if (indice === -1) {
+            throw Error(`Id ${id} inválido`)
+        }
+
+        const dadoAtual = dados[indice]
+        const dadoModificado = {
+            ...dadoAtual,
+            ...modificacoes
+        }
+
+        dados.splice(indice, 1)
+
+        return await this.escreverArquivo([...dados, dadoModificado])
+    }
 }
 
 module.exports = new Database()
